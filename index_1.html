@@ -1,0 +1,1798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FlashQuiz | Learn • Practice • Remember</title>
+<style>
+/* =====================================================
+   FlashQuiz — style.css
+   Purple + Baby Pink theme, responsive, animated
+===================================================== */
+
+:root {
+  --deep-purple: #7C3AED;
+  --baby-pink: #F9A8D4;
+  --lavender: #A78BFA;
+  --light-pink: #FCE7F3;
+  --white: #ffffff;
+  --text-dark: #3B2A54;
+  --text-muted: #7c6a94;
+  --shadow-purple: rgba(124, 58, 237, 0.18);
+  --shadow-pink: rgba(249, 168, 212, 0.35);
+  --radius-lg: 22px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --font-main: 'Poppins', 'Segoe UI', Verdana, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font-main);
+  color: var(--text-dark);
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--light-pink) 0%, #ede9fe 45%, var(--baby-pink) 100%);
+  background-attachment: fixed;
+}
+
+/* ===== SPLASH / INTRO SCREEN ===== */
+.splash-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--deep-purple) 0%, #a855f7 45%, var(--baby-pink) 100%);
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.splash-screen.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.splash-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(10px);
+  opacity: 0.35;
+  background: var(--white);
+  animation: floatBlob 6s ease-in-out infinite;
+}
+
+.blob-1 { width: 220px; height: 220px; top: -60px; left: -60px; animation-delay: 0s; }
+.blob-2 { width: 160px; height: 160px; bottom: -40px; right: -40px; background: var(--light-pink); animation-delay: 1.2s; }
+.blob-3 { width: 130px; height: 130px; bottom: 20%; left: 8%; background: var(--baby-pink); animation-delay: 2.4s; }
+
+@keyframes floatBlob {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-25px) scale(1.08); }
+}
+
+.splash-emoji {
+  position: absolute;
+  font-size: 1.8rem;
+  animation: emojiFloat 4s ease-in-out infinite;
+  opacity: 0.9;
+}
+
+.e1 { top: 14%; left: 12%; animation-delay: 0s; }
+.e2 { top: 22%; right: 14%; animation-delay: 0.6s; font-size: 1.4rem; }
+.e3 { bottom: 18%; left: 18%; animation-delay: 1.1s; font-size: 1.6rem; }
+.e4 { bottom: 26%; right: 10%; animation-delay: 1.6s; }
+.e5 { top: 60%; left: 6%; animation-delay: 2.1s; font-size: 1.5rem; }
+.e6 { top: 65%; right: 8%; animation-delay: 0.3s; font-size: 1.7rem; }
+
+@keyframes emojiFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-18px) rotate(12deg); }
+}
+
+.splash-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 20px;
+}
+
+.splash-logo-wrap {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 6px;
+}
+
+.splash-logo {
+  display: inline-block;
+  font-size: 5.5rem;
+  animation: logoBounce 1.2s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite;
+}
+
+@keyframes logoBounce {
+  0%, 100% { transform: translateY(0) rotate(-6deg) scale(1); }
+  25% { transform: translateY(-22px) rotate(4deg) scale(1.05); }
+  50% { transform: translateY(0) rotate(-2deg) scale(0.98); }
+  75% { transform: translateY(-10px) rotate(6deg) scale(1.02); }
+}
+
+.splash-logo-shadow {
+  display: block;
+  width: 70px;
+  height: 14px;
+  margin: 6px auto 0;
+  background: rgba(0, 0, 0, 0.18);
+  border-radius: 50%;
+  filter: blur(4px);
+  animation: shadowPulse 1.2s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite;
+}
+
+@keyframes shadowPulse {
+  0%, 100% { transform: scale(1); opacity: 0.35; }
+  25% { transform: scale(0.6); opacity: 0.15; }
+  50% { transform: scale(1); opacity: 0.35; }
+  75% { transform: scale(0.8); opacity: 0.2; }
+}
+
+.splash-title {
+  margin: 10px 0 6px;
+  font-size: 2.6rem;
+  font-weight: 800;
+  color: var(--white);
+  text-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  letter-spacing: 0.5px;
+  animation: titlePop 0.7s ease 0.1s both;
+}
+
+@keyframes titlePop {
+  from { opacity: 0; transform: scale(0.8) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.splash-tagline {
+  color: var(--light-pink);
+  font-weight: 600;
+  font-size: 1rem;
+  margin: 0 0 22px;
+  min-height: 24px;
+  animation: fadeInUp 0.7s ease 0.3s both;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.splash-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.splash-dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--white);
+  animation: dotBounce 1.2s ease-in-out infinite;
+}
+
+.splash-dots span:nth-child(2) { animation-delay: 0.15s; }
+.splash-dots span:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes dotBounce {
+  0%, 80%, 100% { transform: translateY(0) scale(0.8); opacity: 0.6; }
+  40% { transform: translateY(-12px) scale(1.1); opacity: 1; }
+}
+
+.splash-progress-track {
+  width: 220px;
+  max-width: 70vw;
+  height: 6px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50px;
+  overflow: hidden;
+}
+
+.splash-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--white);
+  border-radius: 50px;
+  transition: width 5s linear;
+}
+
+.splash-skip-hint {
+  margin: 14px 0 0;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.75);
+  letter-spacing: 0.5px;
+  animation: fadeInUp 0.7s ease 0.5s both;
+}
+
+@media (max-width: 480px) {
+  .splash-logo { font-size: 4rem; }
+  .splash-title { font-size: 2rem; }
+  .splash-tagline { font-size: 0.88rem; }
+}
+
+/* ===== HEADER ===== */
+.app-header {
+  text-align: center;
+  padding: 36px 20px 20px;
+}
+
+.logo {
+  margin: 0;
+  font-size: 2.4rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--deep-purple), #d946ef, var(--baby-pink));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  letter-spacing: 0.5px;
+}
+
+.subtitle {
+  margin: 6px 0 0;
+  color: var(--text-muted);
+  font-weight: 500;
+  letter-spacing: 1px;
+  font-size: 0.95rem;
+}
+
+/* ===== AMBIENT SPARKLES (whole-app background decoration) ===== */
+.ambient-sparkles {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.ambient-sparkles .sparkle {
+  position: absolute;
+  font-size: 1.3rem;
+  opacity: 0.4;
+  animation: sparkleDrift 8s ease-in-out infinite;
+}
+
+.s1 { top: 8%;  left: 5%;   animation-delay: 0s; }
+.s2 { top: 18%; right: 8%;  animation-delay: 1.5s; font-size: 1rem; }
+.s3 { top: 45%; left: 3%;   animation-delay: 3s;   font-size: 1.1rem; }
+.s4 { top: 65%; right: 4%;  animation-delay: 4.5s; }
+.s5 { top: 80%; left: 10%;  animation-delay: 2s;   font-size: 1rem; }
+.s6 { top: 35%; right: 15%; animation-delay: 5.5s; font-size: 0.9rem; }
+.s7 { top: 55%; left: 45%;  animation-delay: 2.8s; font-size: 0.85rem; }
+.s8 { top: 12%; left: 48%;  animation-delay: 4s;   font-size: 1rem; }
+
+@keyframes sparkleDrift {
+  0%, 100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.25; }
+  50% { transform: translateY(-30px) rotate(20deg) scale(1.15); opacity: 0.55; }
+}
+
+@media (max-width: 640px) {
+  .ambient-sparkles .sparkle { display: none; }
+}
+
+/* Keep real content above the ambient decoration layer */
+.app-header, .app-main, .app-footer, .modal-overlay, .toast {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== MAIN LAYOUT ===== */
+.app-main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 10px 20px 60px;
+}
+
+.section-title {
+  text-align: center;
+  color: var(--deep-purple);
+  font-size: 1.4rem;
+  margin-bottom: 18px;
+}
+
+/* ===== CATEGORY GRID ===== */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px;
+}
+
+.category-card {
+  background: var(--white);
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  padding: 20px 12px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 6px 16px var(--shadow-purple);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.category-card:hover,
+.category-card:focus-visible {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 12px 24px var(--shadow-pink);
+  border-color: var(--lavender);
+  outline: none;
+}
+
+.category-card .cat-icon {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.category-card .cat-name {
+  font-weight: 600;
+  color: var(--text-dark);
+  display: block;
+  font-size: 0.95rem;
+}
+
+.category-card .cat-count {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* ===== QUIZ TOP BAR ===== */
+.quiz-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.current-category {
+  color: var(--deep-purple);
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+/* ===== PROGRESS ===== */
+.progress-wrap {
+  margin-bottom: 22px;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.progress-bar-track {
+  width: 100%;
+  height: 10px;
+  background: var(--light-pink);
+  border-radius: 50px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(124, 58, 237, 0.15);
+}
+
+.progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--deep-purple), var(--baby-pink));
+  border-radius: 50px;
+  transition: width 0.4s ease;
+}
+
+/* ===== FLASHCARD STAGE ===== */
+.card-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.fav-btn {
+  position: absolute;
+  top: -14px;
+  right: 6px;
+  z-index: 5;
+  background: var(--white);
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 1.3rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px var(--shadow-purple);
+  transition: transform 0.2s ease, color 0.2s ease;
+  color: var(--lavender);
+}
+
+.fav-btn:hover { transform: scale(1.15) rotate(-8deg); }
+
+.fav-btn.active {
+  color: #f59e0b;
+  text-shadow: 0 0 8px rgba(245, 158, 11, 0.5);
+}
+
+.flashcard {
+  width: 100%;
+  max-width: 560px;
+  height: 300px;
+  perspective: 1400px;
+  cursor: pointer;
+}
+
+.flashcard-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.flashcard.flipped .flashcard-inner {
+  transform: rotateY(180deg);
+}
+
+.flashcard-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  box-shadow: 0 14px 34px var(--shadow-purple), 0 4px 12px var(--shadow-pink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 34px 30px;
+}
+
+.flashcard-front {
+  border: 2px solid var(--lavender);
+}
+
+.flashcard-back {
+  border: 2px solid var(--baby-pink);
+  transform: rotateY(180deg);
+  background: linear-gradient(160deg, var(--white), var(--light-pink));
+}
+
+.face-label {
+  position: absolute;
+  top: 16px;
+  left: 20px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--lavender);
+  background: var(--light-pink);
+  padding: 4px 10px;
+  border-radius: 50px;
+}
+
+.flashcard-back .face-label {
+  color: #db2777;
+  background: #fbcfe8;
+}
+
+.face-text {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.5;
+  margin: 0;
+  max-height: 170px;
+  overflow-y: auto;
+}
+
+.tap-hint {
+  position: absolute;
+  bottom: 14px;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+  font-family: var(--font-main);
+  border: none;
+  border-radius: 50px;
+  padding: 12px 22px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0); }
+
+.btn-primary {
+  background: linear-gradient(90deg, var(--deep-purple), #9333ea);
+  color: var(--white);
+  box-shadow: 0 8px 18px var(--shadow-purple);
+}
+
+.btn-secondary {
+  background: var(--white);
+  color: var(--deep-purple);
+  box-shadow: 0 6px 14px var(--shadow-purple);
+  border: 2px solid var(--lavender);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--deep-purple);
+  border: 2px solid var(--deep-purple);
+}
+
+.btn-danger {
+  background: transparent;
+  color: #db2777;
+  border: 2px solid var(--baby-pink);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-muted);
+  border: 2px solid transparent;
+}
+.btn-ghost:hover { color: var(--deep-purple); }
+
+.btn-add {
+  display: block;
+  margin: 26px auto 0;
+  background: linear-gradient(90deg, var(--baby-pink), var(--lavender));
+  color: var(--white);
+  box-shadow: 0 8px 20px var(--shadow-pink);
+  padding: 13px 26px;
+}
+
+.card-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 22px;
+}
+
+.nav-controls {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+/* ===== STATS ===== */
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-top: 34px;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 18px 10px;
+  box-shadow: 0 8px 20px var(--shadow-purple);
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--deep-purple);
+}
+
+.stat-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ===== FOOTER ===== */
+.app-footer {
+  text-align: center;
+  padding: 20px;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+
+.app-footer p {
+  margin: 4px 0;
+}
+
+.footer-credit {
+  font-size: 0.75rem;
+  color: var(--lavender);
+  font-weight: 500;
+}
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(59, 42, 84, 0.45);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 100;
+  animation: fadeIn 0.2s ease;
+}
+
+/* Make sure the [hidden] attribute always wins over the classes above,
+   otherwise the modal / quiz section would show up on page load */
+[hidden] {
+  display: none !important;
+}
+
+.modal-box {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 20px 50px rgba(124, 58, 237, 0.35);
+  animation: popIn 0.25s ease;
+}
+
+.modal-box h3 {
+  margin-top: 0;
+  color: var(--deep-purple);
+}
+
+.modal-box label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin: 14px 0 6px;
+}
+
+.modal-box select,
+.modal-box textarea {
+  width: 100%;
+  font-family: var(--font-main);
+  border: 2px solid var(--light-pink);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 0.92rem;
+  resize: vertical;
+  transition: border-color 0.2s ease;
+  color: var(--text-dark);
+}
+
+.modal-box select:focus,
+.modal-box textarea:focus {
+  outline: none;
+  border-color: var(--lavender);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.9) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ===== TOAST ===== */
+.toast {
+  position: fixed;
+  bottom: 26px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--deep-purple);
+  color: var(--white);
+  padding: 12px 22px;
+  border-radius: 50px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  box-shadow: 0 10px 24px rgba(124, 58, 237, 0.4);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 200;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ===== EMPTY STATE ===== */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 20px var(--shadow-purple);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 640px) {
+  .logo { font-size: 1.9rem; }
+  .flashcard { height: 260px; }
+  .face-text { font-size: 1.05rem; }
+  .stats-bar { grid-template-columns: repeat(2, 1fr); }
+  .card-actions .btn,
+  .nav-controls .btn { flex: 1 1 auto; }
+  .quiz-topbar { justify-content: center; text-align: center; }
+}
+
+@media (max-width: 400px) {
+  .category-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+</style>
+</head>
+<body>
+
+  <!-- Ambient floating sparkles across the whole app -->
+  <div class="ambient-sparkles" aria-hidden="true">
+    <span class="sparkle s1">✨</span>
+    <span class="sparkle s2">💜</span>
+    <span class="sparkle s3">⭐</span>
+    <span class="sparkle s4">✨</span>
+    <span class="sparkle s5">💗</span>
+    <span class="sparkle s6">⭐</span>
+    <span class="sparkle s7">✨</span>
+    <span class="sparkle s8">💫</span>
+  </div>
+
+  <!-- ===== SPLASH / INTRO SCREEN ===== -->
+  <div class="splash-screen" id="splashScreen">
+    <span class="splash-blob blob-1"></span>
+    <span class="splash-blob blob-2"></span>
+    <span class="splash-blob blob-3"></span>
+
+    <span class="splash-emoji e1">⭐</span>
+    <span class="splash-emoji e2">💜</span>
+    <span class="splash-emoji e3">✨</span>
+    <span class="splash-emoji e4">🎉</span>
+    <span class="splash-emoji e5">💗</span>
+    <span class="splash-emoji e6">🧠</span>
+
+    <div class="splash-content">
+      <div class="splash-logo-wrap">
+        <span class="splash-logo">🧠</span>
+        <span class="splash-logo-shadow"></span>
+      </div>
+      <h1 class="splash-title">FlashQuiz</h1>
+      <p class="splash-tagline" id="splashTagline">Waking up your brain cells... 🧠⚡</p>
+      <div class="splash-dots">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="splash-progress-track">
+        <div class="splash-progress-fill" id="splashProgressFill"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== HEADER ===== -->
+  <header class="app-header">
+    <h1 class="logo">🧠 FlashQuiz</h1>
+    <p class="subtitle">Learn • Practice • Remember</p>
+  </header>
+
+  <main class="app-main">
+
+    <!-- ===== CATEGORY SELECTION ===== -->
+    <section class="category-section" id="categorySection">
+      <h2 class="section-title">Choose a Category</h2>
+      <div class="category-grid" id="categoryGrid">
+        <!-- category cards injected by JS -->
+      </div>
+    </section>
+
+    <!-- ===== QUIZ SECTION ===== -->
+    <section class="quiz-section" id="quizSection" hidden>
+
+      <div class="quiz-topbar">
+        <button class="btn btn-ghost" id="backBtn">&larr; Back to Categories</button>
+        <h2 class="current-category" id="currentCategoryLabel"></h2>
+      </div>
+
+      <!-- Progress -->
+      <div class="progress-wrap">
+        <div class="progress-info">
+          <span id="cardCounter">Card 1 of 10</span>
+          <span id="progressPercent">0%</span>
+        </div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="progressBarFill"></div>
+        </div>
+      </div>
+
+      <!-- Flashcard -->
+      <div class="card-stage">
+        <button class="fav-btn" id="favBtn" title="Mark as favorite">☆</button>
+
+        <div class="flashcard" id="flashcard">
+          <div class="flashcard-inner" id="flashcardInner">
+            <div class="flashcard-face flashcard-front">
+              <span class="face-label">Question</span>
+              <p class="face-text" id="questionText"></p>
+              <span class="tap-hint">Tap "Show Answer" to flip 🔄</span>
+            </div>
+            <div class="flashcard-face flashcard-back">
+              <span class="face-label">Answer</span>
+              <p class="face-text" id="answerText"></p>
+              <span class="tap-hint">Tap "Hide Answer" to flip back 🔄</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <button class="btn btn-primary" id="flipBtn">Show Answer</button>
+          <button class="btn btn-outline" id="editBtn">✏️ Edit</button>
+          <button class="btn btn-danger" id="deleteBtn">🗑️ Delete</button>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="nav-controls">
+        <button class="btn btn-secondary" id="prevBtn">⬅ Previous</button>
+        <button class="btn btn-secondary" id="nextBtn">Next ➡</button>
+      </div>
+
+      <button class="btn btn-add" id="addCardBtn">➕ Add Flashcard</button>
+
+      <!-- Stats -->
+      <div class="stats-bar">
+        <div class="stat-item">
+          <span class="stat-value" id="statTotal">0</span>
+          <span class="stat-label">Total Cards</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="statStudied">0</span>
+          <span class="stat-label">Studied</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="statProgress">0%</span>
+          <span class="stat-label">Progress</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="statFavs">0</span>
+          <span class="stat-label">Favorites ⭐</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    <p>Made with 💜 for CodeAlpha &mdash; FlashQuiz</p>
+    <p class="footer-credit">By G. Meghana Reddy &mdash; Gouthami Institute of Technology and Management for Women &mdash; Branch: CSE</p>
+  </footer>
+
+  <!-- ===== ADD / EDIT MODAL ===== -->
+  <div class="modal-overlay" id="modalOverlay" hidden>
+    <div class="modal-box">
+      <h3 id="modalTitle">➕ Add Flashcard</h3>
+      <form id="cardForm">
+        <label for="categoryInput">Category</label>
+        <select id="categoryInput" required></select>
+
+        <label for="questionInput">Question</label>
+        <textarea id="questionInput" rows="2" required placeholder="Type the question..."></textarea>
+
+        <label for="answerInput">Answer</label>
+        <textarea id="answerInput" rows="2" required placeholder="Type the answer..."></textarea>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" id="cancelModalBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="saveCardBtn">Save Card</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast notification -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+/* =====================================================
+   FlashQuiz — script.js
+   Vanilla JS flashcard quiz app with localStorage
+===================================================== */
+
+/* -----------------------------------------------------
+   1) DEFAULT FLASHCARD DATA (built-in question bank)
+   Each category has: icon, name, and a list of cards
+----------------------------------------------------- */
+const DEFAULT_DATA = {
+  python: {
+    icon: "🐍", name: "Python",
+    cards: [
+      { q: "What keyword defines a function in Python?", a: "def" },
+      { q: "How do you start a comment in Python?", a: "With a # symbol" },
+      { q: "What data type is used for whole numbers?", a: "int" },
+      { q: "Which function prints text to the screen?", a: "print()" },
+      { q: "What symbol is used for exponentiation?", a: "** (e.g., 2**3 = 8)" },
+      { q: "What does len() do?", a: "Returns the length of a sequence (list, string, etc.)" },
+      { q: "How do you create a list in Python?", a: "Using square brackets, e.g. my_list = [1, 2, 3]" },
+      { q: "What is the file extension for Python files?", a: ".py" },
+      { q: "Which loop is used to iterate over a sequence?", a: "for loop" },
+      { q: "What does 'pip' stand for/do?", a: "It's Python's package installer" },
+      { q: "How do you define a dictionary in Python?", a: "Using curly braces with key:value pairs, e.g. {'a':1}" },
+      { q: "What is the output of type(3.14)?", a: "<class 'float'>" },
+      { q: "What is a lambda function in Python?", a: "A small anonymous function defined with the lambda keyword" },
+      { q: "How do you open a file for reading in Python?", a: "open('filename.txt', 'r')" },
+      { q: "What does the 'range()' function do?", a: "Generates a sequence of numbers" },
+      { q: "How do you handle exceptions in Python?", a: "Using try-except blocks" },
+      { q: "What is a tuple in Python?", a: "An ordered, immutable collection of items" },
+      { q: "What is the difference between '==' and 'is'?", a: "'==' compares values, 'is' compares object identity" },
+      { q: "What does 'self' refer to in a class method?", a: "The instance of the class calling the method" },
+      { q: "How do you import a module in Python?", a: "Using the import keyword, e.g. import math" },
+    ]
+  },
+  java: {
+    icon: "☕", name: "Java",
+    cards: [
+      { q: "What is the entry point method of a Java program?", a: "public static void main(String[] args)" },
+      { q: "Which keyword is used to create a class?", a: "class" },
+      { q: "What is JVM?", a: "Java Virtual Machine, runs compiled Java bytecode" },
+      { q: "Which keyword prevents a class from being inherited?", a: "final" },
+      { q: "What symbol ends most statements in Java?", a: "Semicolon (;)" },
+      { q: "What is used to handle exceptions in Java?", a: "try-catch blocks" },
+      { q: "Which collection stores unique elements only?", a: "Set" },
+      { q: "What is the default value of a boolean in Java?", a: "false" },
+      { q: "Which keyword is used to inherit a class?", a: "extends" },
+      { q: "What does JDK stand for?", a: "Java Development Kit" },
+      { q: "Is Java platform independent?", a: "Yes, thanks to the JVM ('write once, run anywhere')" },
+      { q: "What is the parent class of all classes in Java?", a: "Object" },
+      { q: "What keyword is used to implement an interface?", a: "implements" },
+      { q: "What is method overloading?", a: "Defining multiple methods with the same name but different parameters" },
+      { q: "What collection maintains key-value pairs in Java?", a: "Map (e.g., HashMap)" },
+      { q: "What is a constructor in Java?", a: "A special method used to initialize objects" },
+      { q: "What does 'static' mean in Java?", a: "The member belongs to the class, not to any instance" },
+      { q: "What is garbage collection in Java?", a: "Automatic memory management that removes unused objects" },
+      { q: "What is the difference between '==' and '.equals()' for objects?", a: "'==' compares references, '.equals()' compares values" },
+    ]
+  },
+  cpp: {
+    icon: "⚙️", name: "C / C++",
+    cards: [
+      { q: "What header file is needed for input/output in C?", a: "stdio.h" },
+      { q: "What symbol is used for pointers in C/C++?", a: "* (asterisk)" },
+      { q: "Which keyword creates a class in C++?", a: "class" },
+      { q: "What is the function used to allocate memory dynamically in C?", a: "malloc()" },
+      { q: "What operator is used to access a member via a pointer?", a: "-> (arrow operator)" },
+      { q: "How do you comment a single line in C/C++?", a: "Using //" },
+      { q: "What is the default return type if none is specified for main()?", a: "int" },
+      { q: "Which keyword is used for constants?", a: "const" },
+      { q: "What is the difference between C and C++?", a: "C++ supports object-oriented programming, C is procedural" },
+      { q: "What does 'namespace std' provide?", a: "Access to the C++ standard library names like cout and cin" },
+      { q: "How do you free allocated memory in C++?", a: "Using delete (or free() in C)" },
+      { q: "What is a header file used for?", a: "Sharing declarations across multiple source files" },
+      { q: "What does 'sizeof' return in C/C++?", a: "The size in bytes of a data type or variable" },
+      { q: "What is function overloading in C++?", a: "Defining multiple functions with the same name but different parameters" },
+      { q: "What is a struct in C?", a: "A user-defined data type that groups related variables" },
+      { q: "What does 'void' mean as a return type?", a: "The function returns no value" },
+      { q: "What is the scope resolution operator in C++?", a: "::" },
+      { q: "What is a reference variable in C++?", a: "An alias for another variable, declared with &" },
+      { q: "What is inheritance in C++?", a: "A mechanism where one class acquires properties of another" },
+    ]
+  },
+  webdev: {
+    icon: "🌐", name: "HTML & CSS",
+    cards: [
+      { q: "What does HTML stand for?", a: "HyperText Markup Language" },
+      { q: "What tag creates a hyperlink?", a: "<a> tag" },
+      { q: "What does CSS stand for?", a: "Cascading Style Sheets" },
+      { q: "Which property changes text color in CSS?", a: "color" },
+      { q: "What tag is used for the largest heading?", a: "<h1>" },
+      { q: "What does 'display: flex' do?", a: "Enables flexbox layout for arranging child elements" },
+      { q: "Which attribute specifies an image source?", a: "src" },
+      { q: "What is the CSS box model made of?", a: "Content, padding, border, and margin" },
+      { q: "What tag defines an unordered list?", a: "<ul>" },
+      { q: "How do you link an external CSS file?", a: "<link rel='stylesheet' href='style.css'>" },
+      { q: "What does 'position: absolute' do?", a: "Positions an element relative to its nearest positioned ancestor" },
+      { q: "What is the purpose of the <meta viewport> tag?", a: "Controls page scaling and layout on mobile devices" },
+      { q: "What does 'z-index' control?", a: "The stacking order of overlapping elements" },
+      { q: "What is a CSS class selector prefix?", a: "A dot (.), e.g. .my-class" },
+      { q: "What tag embeds an image in HTML?", a: "<img>" },
+      { q: "What does 'flex-direction' control in Flexbox?", a: "The direction items are laid out (row or column)" },
+      { q: "What is the purpose of semantic HTML tags like <header> or <footer>?", a: "They describe the meaning of content, improving accessibility and SEO" },
+      { q: "What CSS property adds space inside an element's border?", a: "padding" },
+      { q: "What does 'grid-template-columns' define in CSS Grid?", a: "The number and size of columns in a grid layout" },
+    ]
+  },
+  javascript: {
+    icon: "🟨", name: "JavaScript",
+    cards: [
+      { q: "What keyword declares a variable that can be reassigned?", a: "let" },
+      { q: "What does '===' check for?", a: "Strict equality (value and type)" },
+      { q: "How do you write a function in JavaScript?", a: "function myFunc() { }" },
+      { q: "What method adds an item to the end of an array?", a: "push()" },
+      { q: "What is 'NaN'?", a: "Not a Number - result of an invalid math operation" },
+      { q: "What does JSON stand for?", a: "JavaScript Object Notation" },
+      { q: "How do you select an element by ID in JS?", a: "document.getElementById('id')" },
+      { q: "What is a callback function?", a: "A function passed as an argument to run after another completes" },
+      { q: "What keyword creates a constant?", a: "const" },
+      { q: "What does 'localStorage' do?", a: "Stores data in the browser persistently" },
+      { q: "What is an arrow function?", a: "A shorthand function syntax, e.g. (x) => x * 2" },
+      { q: "What does 'this' refer to in JavaScript?", a: "The object that is currently executing the code" },
+      { q: "What is the DOM?", a: "Document Object Model - a programming interface for HTML/XML documents" },
+      { q: "What method removes the last item from an array?", a: "pop()" },
+      { q: "What is a Promise in JavaScript?", a: "An object representing the eventual completion of an async operation" },
+      { q: "What does 'addEventListener' do?", a: "Attaches an event handler function to an element" },
+      { q: "What is the difference between 'let' and 'var'?", a: "'let' is block-scoped, 'var' is function-scoped" },
+      { q: "What does 'async/await' do?", a: "Simplifies working with promises for asynchronous code" },
+      { q: "What is destructuring in JavaScript?", a: "Extracting values from arrays or objects into variables" },
+    ]
+  },
+  ai: {
+    icon: "🤖", name: "AI",
+    cards: [
+      { q: "What does AI stand for?", a: "Artificial Intelligence" },
+      { q: "What is Machine Learning?", a: "A subset of AI where systems learn patterns from data" },
+      { q: "What does NLP stand for?", a: "Natural Language Processing" },
+      { q: "What is a neural network inspired by?", a: "The human brain's structure of neurons" },
+      { q: "What is 'training data'?", a: "Data used to teach a machine learning model" },
+      { q: "What is overfitting?", a: "When a model learns training data too well and fails on new data" },
+      { q: "What company created ChatGPT?", a: "OpenAI" },
+      { q: "What is Deep Learning?", a: "A type of ML using multi-layered neural networks" },
+      { q: "What does LLM stand for?", a: "Large Language Model" },
+      { q: "What is a chatbot?", a: "A program that simulates conversation with users" },
+      { q: "What is computer vision?", a: "A field of AI that lets machines interpret visual data" },
+      { q: "What is a dataset?", a: "A structured collection of data used for training or testing models" },
+      { q: "What is reinforcement learning?", a: "A learning method where agents learn by receiving rewards or penalties" },
+      { q: "What is a prompt in the context of LLMs?", a: "The input text given to a language model to generate a response" },
+      { q: "What does 'AGI' stand for?", a: "Artificial General Intelligence" },
+      { q: "What is supervised learning?", a: "A ML approach where models learn from labeled data" },
+      { q: "What is a token in NLP?", a: "A unit of text, like a word or subword, used by language models" },
+      { q: "What is bias in AI models?", a: "Systematic errors that unfairly favor or disfavor certain outcomes" },
+      { q: "What company developed the Transformer architecture paper?", a: "Google (in the 'Attention Is All You Need' paper)" },
+    ]
+  },
+  math: {
+    icon: "🧮", name: "Mathematics",
+    cards: [
+      { q: "What is the value of π (pi) to 2 decimal places?", a: "3.14" },
+      { q: "What is the square root of 144?", a: "12" },
+      { q: "What is the formula for the area of a circle?", a: "πr²" },
+      { q: "What is 7 × 8?", a: "56" },
+      { q: "What is a prime number?", a: "A number greater than 1 divisible only by 1 and itself" },
+      { q: "What is the Pythagorean theorem?", a: "a² + b² = c² (for right triangles)" },
+      { q: "What is the sum of angles in a triangle?", a: "180 degrees" },
+      { q: "What is 5 factorial (5!)?", a: "120" },
+      { q: "What is the value of 2 to the power of 10?", a: "1024" },
+      { q: "What do you call a number that can't be expressed as a fraction?", a: "An irrational number" },
+      { q: "What is the formula for the area of a rectangle?", a: "length × width" },
+      { q: "What is 15% of 200?", a: "30" },
+      { q: "What is the value of 0 factorial (0!)?", a: "1" },
+      { q: "What is an even number?", a: "A number divisible by 2 with no remainder" },
+      { q: "What is the formula for the circumference of a circle?", a: "2πr" },
+      { q: "What is the next number in the sequence 2, 4, 8, 16?", a: "32" },
+      { q: "What is the sum of the interior angles of a quadrilateral?", a: "360 degrees" },
+      { q: "What is a fraction with the same numerator and denominator equal to?", a: "1" },
+      { q: "What is the square of 15?", a: "225" },
+    ]
+  },
+  science: {
+    icon: "🔬", name: "Science",
+    cards: [
+      { q: "What is the chemical symbol for water?", a: "H2O" },
+      { q: "What planet is known as the Red Planet?", a: "Mars" },
+      { q: "What gas do plants absorb from the atmosphere?", a: "Carbon dioxide (CO2)" },
+      { q: "What is the powerhouse of the cell?", a: "The mitochondria" },
+      { q: "What force pulls objects toward Earth?", a: "Gravity" },
+      { q: "What is the boiling point of water in Celsius?", a: "100°C" },
+      { q: "What is the chemical symbol for gold?", a: "Au" },
+      { q: "What is DNA short for?", a: "Deoxyribonucleic Acid" },
+      { q: "What is the speed of light (approx)?", a: "About 300,000 km/second" },
+      { q: "What is the process by which plants make food?", a: "Photosynthesis" },
+      { q: "How many bones are in the adult human body?", a: "206" },
+      { q: "What is the largest planet in our solar system?", a: "Jupiter" },
+      { q: "What gas makes up most of Earth's atmosphere?", a: "Nitrogen (about 78%)" },
+      { q: "What is the chemical formula for table salt?", a: "NaCl" },
+      { q: "What organ pumps blood through the body?", a: "The heart" },
+      { q: "What is the study of living organisms called?", a: "Biology" },
+      { q: "What force keeps planets in orbit around the Sun?", a: "Gravity" },
+      { q: "What is the smallest unit of life?", a: "The cell" },
+      { q: "What state of matter has no fixed shape or volume?", a: "Gas" },
+      { q: "What is the pH value of pure water?", a: "7 (neutral)" },
+    ]
+  },
+  geography: {
+    icon: "🌍", name: "Geography",
+    cards: [
+      { q: "What is the largest continent by area?", a: "Asia" },
+      { q: "What is the longest river in the world?", a: "The Nile River" },
+      { q: "What is the capital of Japan?", a: "Tokyo" },
+      { q: "Which is the smallest country in the world?", a: "Vatican City" },
+      { q: "What is the tallest mountain in the world?", a: "Mount Everest" },
+      { q: "Which desert is the largest in the world?", a: "The Sahara Desert" },
+      { q: "How many continents are there?", a: "Seven" },
+      { q: "What is the capital of Australia?", a: "Canberra" },
+      { q: "Which ocean is the largest?", a: "The Pacific Ocean" },
+      { q: "What country has the largest population?", a: "India (as of recent data)" },
+      { q: "What is the capital of France?", a: "Paris" },
+      { q: "Which country is known as the Land of the Rising Sun?", a: "Japan" },
+      { q: "What is the largest island in the world?", a: "Greenland" },
+      { q: "Which river flows through Egypt?", a: "The Nile River" },
+      { q: "What is the capital of Canada?", a: "Ottawa" },
+      { q: "Which mountain range separates Europe and Asia?", a: "The Ural Mountains" },
+      { q: "What is the smallest continent by area?", a: "Australia" },
+      { q: "Which country has the most time zones?", a: "France (due to its overseas territories)" },
+      { q: "What is the capital of Egypt?", a: "Cairo" },
+    ]
+  },
+  history: {
+    icon: "📜", name: "History",
+    cards: [
+      { q: "In which year did World War II end?", a: "1945" },
+      { q: "Who was the first President of the United States?", a: "George Washington" },
+      { q: "Which ancient civilization built the pyramids of Giza?", a: "The Ancient Egyptians" },
+      { q: "In which year did India gain independence?", a: "1947" },
+      { q: "Who painted the Mona Lisa?", a: "Leonardo da Vinci" },
+      { q: "What wall divided Berlin during the Cold War?", a: "The Berlin Wall" },
+      { q: "Who was known as the 'Maid of Orléans'?", a: "Joan of Arc" },
+      { q: "Which empire was ruled by Julius Caesar?", a: "The Roman Empire" },
+      { q: "What ship famously sank in 1912?", a: "The Titanic" },
+      { q: "Who wrote the Declaration of Independence?", a: "Thomas Jefferson" },
+      { q: "What year did the French Revolution begin?", a: "1789" },
+      { q: "Who was the leader of Nazi Germany during World War II?", a: "Adolf Hitler" },
+      { q: "What ancient wonder was located in Giza?", a: "The Great Pyramid of Giza" },
+      { q: "Who was the first man to circumnavigate the globe (expedition)?", a: "Ferdinand Magellan's expedition" },
+      { q: "What event started World War I?", a: "The assassination of Archduke Franz Ferdinand" },
+      { q: "Who was the Queen of England for over 60 years, in the Victorian era?", a: "Queen Victoria" },
+      { q: "What ancient civilization is known for building Machu Picchu?", a: "The Inca civilization" },
+      { q: "Who was known as the 'Iron Lady'?", a: "Margaret Thatcher" },
+    ]
+  },
+  gaming: {
+    icon: "🎮", name: "Gaming",
+    cards: [
+      { q: "Who is the main character in the Legend of Zelda series?", a: "Link" },
+      { q: "What company created Minecraft?", a: "Mojang" },
+      { q: "What is the best-selling video game of all time?", a: "Minecraft" },
+      { q: "What plumber is Nintendo's mascot?", a: "Mario" },
+      { q: "What does 'RPG' stand for in gaming?", a: "Role-Playing Game" },
+      { q: "What console is made by Sony?", a: "PlayStation" },
+      { q: "What battle royale game features a purple storm?", a: "Fortnite" },
+      { q: "What company developed the game 'DOTA 2'?", a: "Valve" },
+      { q: "What is the fictional currency in many games called?", a: "Varies by game (e.g., gold, coins, gems)" },
+      { q: "What genre is 'Call of Duty'?", a: "First-Person Shooter (FPS)" },
+      { q: "What is an 'NPC' in gaming?", a: "Non-Player Character" },
+      { q: "What game features the character Master Chief?", a: "Halo" },
+      { q: "What is 'esports'?", a: "Competitive, organized video gaming" },
+      { q: "What company makes the Xbox console?", a: "Microsoft" },
+      { q: "What sandbox game lets players build with blocks?", a: "Minecraft" },
+      { q: "What is a 'speedrun'?", a: "Completing a game as fast as possible" },
+      { q: "What game franchise features Pikachu?", a: "Pokémon" },
+      { q: "What does 'MMO' stand for?", a: "Massively Multiplayer Online (game)" },
+    ]
+  },
+  movies: {
+    icon: "🎬", name: "Movies",
+    cards: [
+      { q: "Who directed the movie 'Titanic'?", a: "James Cameron" },
+      { q: "What is the highest-grossing film of all time?", a: "Avatar" },
+      { q: "Which studio produces the 'Toy Story' films?", a: "Pixar" },
+      { q: "Who played Iron Man in the Marvel films?", a: "Robert Downey Jr." },
+      { q: "What movie won the Best Picture Oscar in 2020?", a: "Parasite" },
+      { q: "What is the fictional wizarding school in Harry Potter?", a: "Hogwarts" },
+      { q: "Who directed 'Jurassic Park'?", a: "Steven Spielberg" },
+      { q: "What movie features the song 'Let It Go'?", a: "Frozen" },
+      { q: "Which actor played the Joker in 'The Dark Knight'?", a: "Heath Ledger" },
+      { q: "What is the name of the ring in 'The Lord of the Rings'?", a: "The One Ring" },
+      { q: "Who directed 'Inception'?", a: "Christopher Nolan" },
+      { q: "What animated studio created 'Shrek'?", a: "DreamWorks Animation" },
+      { q: "Who played the character Neo in 'The Matrix'?", a: "Keanu Reeves" },
+      { q: "What movie features a shark terrorizing a beach town?", a: "Jaws" },
+      { q: "What is the highest honor a film can win at the Oscars?", a: "Best Picture" },
+      { q: "Who directed the 'Star Wars' original trilogy?", a: "George Lucas" },
+      { q: "What movie is about a young lion who becomes king?", a: "The Lion King" },
+      { q: "Who composed the score for 'Star Wars'?", a: "John Williams" },
+    ]
+  },
+  sports: {
+    icon: "⚽", name: "Sports",
+    cards: [
+      { q: "How many players are on a soccer team on the field?", a: "11" },
+      { q: "In which sport would you perform a 'slam dunk'?", a: "Basketball" },
+      { q: "How often are the Summer Olympics held?", a: "Every 4 years" },
+      { q: "What sport is known as 'America's pastime'?", a: "Baseball" },
+      { q: "How many rings are on the Olympic flag?", a: "5" },
+      { q: "In tennis, what is a score of zero called?", a: "Love" },
+      { q: "Which country has won the most FIFA World Cups?", a: "Brazil" },
+      { q: "What is the maximum score in a single frame of ten-pin bowling?", a: "30 (a strike)" },
+      { q: "How long is a marathon (in km)?", a: "About 42.2 km" },
+      { q: "In cricket, how many players are on a team?", a: "11" },
+      { q: "What sport uses a shuttlecock?", a: "Badminton" },
+      { q: "How many points is a touchdown worth in American football?", a: "6 points" },
+      { q: "What sport is played at Wimbledon?", a: "Tennis" },
+      { q: "How many holes are played in a standard round of golf?", a: "18" },
+      { q: "What is the term for a score of one-under-par in golf?", a: "Birdie" },
+      { q: "Which country hosted the 2016 Summer Olympics?", a: "Brazil (Rio de Janeiro)" },
+      { q: "What sport is known as 'the sweet science'?", a: "Boxing" },
+      { q: "How many players are on a basketball team on the court?", a: "5" },
+    ]
+  },
+  space: {
+    icon: "🚀", name: "Space",
+    cards: [
+      { q: "What is the closest planet to the Sun?", a: "Mercury" },
+      { q: "Who was the first human to walk on the Moon?", a: "Neil Armstrong" },
+      { q: "What galaxy is Earth located in?", a: "The Milky Way" },
+      { q: "What is a group of stars forming a pattern called?", a: "A constellation" },
+      { q: "What is the largest planet in our solar system?", a: "Jupiter" },
+      { q: "What do we call a star that explodes?", a: "A supernova" },
+      { q: "What space agency landed rovers on Mars?", a: "NASA" },
+      { q: "What is the name of Earth's natural satellite?", a: "The Moon" },
+      { q: "What is a black hole?", a: "A region where gravity is so strong not even light escapes" },
+      { q: "How long does Earth take to orbit the Sun?", a: "About 365.25 days" },
+      { q: "What is the term for the point closest to Earth in an orbit?", a: "Perigee" },
+      { q: "What was the first artificial satellite launched into space?", a: "Sputnik 1" },
+      { q: "What is the name of NASA's most famous space telescope?", a: "The Hubble Space Telescope" },
+      { q: "What is a light-year a measure of?", a: "Distance - how far light travels in one year" },
+      { q: "What is the red planet's smallest moon called?", a: "Deimos (Mars has Phobos and Deimos)" },
+      { q: "What is the term for a rock from space that reaches Earth's surface?", a: "A meteorite" },
+      { q: "What company founded by Elon Musk builds rockets?", a: "SpaceX" },
+      { q: "What is the asteroid belt located between?", a: "Mars and Jupiter" },
+    ]
+  },
+  general: {
+    icon: "🧠", name: "General Knowledge",
+    cards: [
+      { q: "What is the currency of Japan?", a: "The Yen" },
+      { q: "How many days are there in a leap year?", a: "366" },
+      { q: "What is the largest organ in the human body?", a: "The skin" },
+      { q: "How many colors are in a rainbow?", a: "7" },
+      { q: "What is the tallest animal in the world?", a: "The giraffe" },
+      { q: "Which language has the most native speakers?", a: "Mandarin Chinese" },
+      { q: "What is the freezing point of water in Celsius?", a: "0°C" },
+      { q: "What is the national language of Brazil?", a: "Portuguese" },
+      { q: "How many letters are there in the English alphabet?", a: "26" },
+      { q: "What instrument has 88 keys?", a: "The piano" },
+      { q: "How many continents are there on Earth?", a: "Seven" },
+      { q: "What is the tallest waterfall in the world?", a: "Angel Falls, Venezuela" },
+      { q: "What is the fastest land animal?", a: "The cheetah" },
+      { q: "How many sides does a hexagon have?", a: "6" },
+      { q: "What is the largest ocean on Earth?", a: "The Pacific Ocean" },
+      { q: "What is the main ingredient in guacamole?", a: "Avocado" },
+      { q: "What is the most spoken language in the world by total speakers?", a: "English (including non-native speakers)" },
+      { q: "What is the hardest natural substance on Earth?", a: "Diamond" },
+      { q: "How many strings does a standard guitar have?", a: "6" },
+    ]
+  }
+};
+
+/* -----------------------------------------------------
+   2) STORAGE KEYS + STATE
+----------------------------------------------------- */
+const STORAGE_KEY = "flashquiz_custom_cards";     // user-added/edited/deleted cards
+const FAVORITES_KEY = "flashquiz_favorites";       // favorite card ids
+const STUDIED_KEY = "flashquiz_studied";           // studied card ids
+
+let state = {
+  currentCategory: null,
+  currentIndex: 0,
+  isFlipped: false,
+  editingCardId: null,   // if set, the modal is editing this card instead of adding new
+};
+
+/* -----------------------------------------------------
+   3) DATA HELPERS (merge default + custom, localStorage)
+----------------------------------------------------- */
+
+// Build a full working copy of all cards, each with a unique id.
+// Also merges in any newly-added default cards for returning users
+// whose localStorage still has the older (smaller) card set.
+function loadAllCards() {
+  const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+  const merged = {};
+
+  Object.keys(DEFAULT_DATA).forEach(catKey => {
+    const defaultCards = DEFAULT_DATA[catKey].cards.map((c, i) => ({
+      id: `${catKey}-${i}`,
+      q: c.q,
+      a: c.a
+    }));
+
+    if (!stored || !stored[catKey]) {
+      // First run, or a brand-new category: use the full default set
+      merged[catKey] = defaultCards;
+    } else {
+      // Returning user: keep their saved cards (including edits/custom
+      // additions), and top up with any new default cards they don't have yet
+      const existingIds = new Set(stored[catKey].map(c => c.id));
+      const newDefaults = defaultCards.filter(c => !existingIds.has(c.id));
+      merged[catKey] = [...stored[catKey], ...newDefaults];
+    }
+  });
+
+  // Preserve any custom categories that might exist in storage
+  if (stored) {
+    Object.keys(stored).forEach(catKey => {
+      if (!merged[catKey]) merged[catKey] = stored[catKey];
+    });
+  }
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+  return merged;
+}
+
+function saveAllCards(data) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function loadFavorites() {
+  return JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]");
+}
+
+function saveFavorites(favs) {
+  localStorage.setItem(FAVORITES_KEY, JSON.stringify(favs));
+}
+
+function loadStudied() {
+  return JSON.parse(localStorage.getItem(STUDIED_KEY) || "[]");
+}
+
+function saveStudied(studied) {
+  localStorage.setItem(STUDIED_KEY, JSON.stringify(studied));
+}
+
+let allCards = loadAllCards();
+let favorites = loadFavorites();
+let studied = loadStudied();
+
+/* -----------------------------------------------------
+   4) DOM REFERENCES
+----------------------------------------------------- */
+const categorySection = document.getElementById("categorySection");
+const categoryGrid = document.getElementById("categoryGrid");
+const quizSection = document.getElementById("quizSection");
+const backBtn = document.getElementById("backBtn");
+const currentCategoryLabel = document.getElementById("currentCategoryLabel");
+
+const cardCounter = document.getElementById("cardCounter");
+const progressPercent = document.getElementById("progressPercent");
+const progressBarFill = document.getElementById("progressBarFill");
+
+const flashcard = document.getElementById("flashcard");
+const flashcardInner = document.getElementById("flashcardInner");
+const questionText = document.getElementById("questionText");
+const answerText = document.getElementById("answerText");
+const flipBtn = document.getElementById("flipBtn");
+const favBtn = document.getElementById("favBtn");
+const editBtn = document.getElementById("editBtn");
+const deleteBtn = document.getElementById("deleteBtn");
+
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const addCardBtn = document.getElementById("addCardBtn");
+
+const statTotal = document.getElementById("statTotal");
+const statStudied = document.getElementById("statStudied");
+const statProgress = document.getElementById("statProgress");
+const statFavs = document.getElementById("statFavs");
+
+const modalOverlay = document.getElementById("modalOverlay");
+const modalTitle = document.getElementById("modalTitle");
+const cardForm = document.getElementById("cardForm");
+const categoryInput = document.getElementById("categoryInput");
+const questionInput = document.getElementById("questionInput");
+const answerInput = document.getElementById("answerInput");
+const cancelModalBtn = document.getElementById("cancelModalBtn");
+
+const toast = document.getElementById("toast");
+
+/* -----------------------------------------------------
+   5) RENDER: CATEGORY GRID
+----------------------------------------------------- */
+function renderCategoryGrid() {
+  categoryGrid.innerHTML = "";
+  Object.keys(DEFAULT_DATA).forEach(catKey => {
+    const meta = DEFAULT_DATA[catKey];
+    const count = (allCards[catKey] || []).length;
+
+    const card = document.createElement("button");
+    card.className = "category-card";
+    card.type = "button";
+    card.innerHTML = `
+      <span class="cat-icon">${meta.icon}</span>
+      <span class="cat-name">${meta.name}</span>
+      <span class="cat-count">${count} cards</span>
+    `;
+    card.addEventListener("click", () => openCategory(catKey));
+    categoryGrid.appendChild(card);
+  });
+}
+
+/* -----------------------------------------------------
+   6) OPEN CATEGORY / SHOW QUIZ SCREEN
+----------------------------------------------------- */
+function openCategory(catKey) {
+  if (!allCards[catKey] || allCards[catKey].length === 0) {
+    showToast("This category has no cards yet. Add one! ➕");
+    return;
+  }
+  state.currentCategory = catKey;
+  state.currentIndex = 0;
+  state.isFlipped = false;
+
+  categorySection.hidden = true;
+  quizSection.hidden = false;
+
+  currentCategoryLabel.textContent = `${DEFAULT_DATA[catKey].icon} ${DEFAULT_DATA[catKey].name}`;
+  renderCard();
+}
+
+backBtn.addEventListener("click", () => {
+  quizSection.hidden = true;
+  categorySection.hidden = false;
+  renderCategoryGrid(); // refresh counts
+});
+
+/* -----------------------------------------------------
+   7) RENDER: FLASHCARD + PROGRESS + STATS
+----------------------------------------------------- */
+function getCurrentCardList() {
+  return allCards[state.currentCategory] || [];
+}
+
+function renderCard() {
+  const list = getCurrentCardList();
+  if (list.length === 0) {
+    // No cards left in this category
+    questionText.textContent = "No cards left in this category.";
+    answerText.textContent = "Add a new flashcard to continue!";
+    cardCounter.textContent = "Card 0 of 0";
+    progressPercent.textContent = "0%";
+    progressBarFill.style.width = "0%";
+    updateStats();
+    return;
+  }
+
+  // Clamp index within bounds
+  if (state.currentIndex >= list.length) state.currentIndex = list.length - 1;
+  if (state.currentIndex < 0) state.currentIndex = 0;
+
+  const card = list[state.currentIndex];
+
+  questionText.textContent = card.q;
+  answerText.textContent = card.a;
+
+  // Reset flip state on new card
+  state.isFlipped = false;
+  flashcard.classList.remove("flipped");
+  flipBtn.textContent = "Show Answer";
+
+  // Favorite star
+  favBtn.textContent = favorites.includes(card.id) ? "★" : "☆";
+  favBtn.classList.toggle("active", favorites.includes(card.id));
+
+  // Progress
+  const current = state.currentIndex + 1;
+  const total = list.length;
+  cardCounter.textContent = `Card ${current} of ${total}`;
+  const pct = Math.round((current / total) * 100);
+  progressPercent.textContent = `${pct}%`;
+  progressBarFill.style.width = `${pct}%`;
+
+  // Mark as studied once viewed
+  if (!studied.includes(card.id)) {
+    studied.push(card.id);
+    saveStudied(studied);
+  }
+
+  updateStats();
+}
+
+function updateStats() {
+  const list = getCurrentCardList();
+  const total = list.length;
+  const studiedInCategory = list.filter(c => studied.includes(c.id)).length;
+  const favsInCategory = list.filter(c => favorites.includes(c.id)).length;
+  const progressPct = total > 0 ? Math.round((studiedInCategory / total) * 100) : 0;
+
+  statTotal.textContent = total;
+  statStudied.textContent = studiedInCategory;
+  statProgress.textContent = `${progressPct}%`;
+  statFavs.textContent = favsInCategory;
+}
+
+/* -----------------------------------------------------
+   8) FLIP CARD
+----------------------------------------------------- */
+// Tapping the card itself just flips it back and forth, for exploring freely
+function toggleFlip() {
+  state.isFlipped = !state.isFlipped;
+  flashcard.classList.toggle("flipped", state.isFlipped);
+  flipBtn.textContent = state.isFlipped ? "Next Question →" : "Show Answer";
+}
+
+// The main action button: first press reveals the answer, and since you've
+// now "completed" this question, the next press jumps straight to the next card
+function handleFlipButtonClick() {
+  if (!state.isFlipped) {
+    toggleFlip();
+  } else {
+    goToNextCard();
+  }
+}
+
+flipBtn.addEventListener("click", handleFlipButtonClick);
+flashcard.addEventListener("click", toggleFlip);
+
+/* -----------------------------------------------------
+   9) NAVIGATION
+----------------------------------------------------- */
+function goToNextCard() {
+  const list = getCurrentCardList();
+  if (list.length === 0) return;
+  state.currentIndex = (state.currentIndex + 1) % list.length;
+  renderCard();
+}
+
+function goToPrevCard() {
+  const list = getCurrentCardList();
+  if (list.length === 0) return;
+  state.currentIndex = (state.currentIndex - 1 + list.length) % list.length;
+  renderCard();
+}
+
+prevBtn.addEventListener("click", goToPrevCard);
+nextBtn.addEventListener("click", goToNextCard);
+
+/* -----------------------------------------------------
+   10) FAVORITES
+----------------------------------------------------- */
+favBtn.addEventListener("click", () => {
+  const list = getCurrentCardList();
+  if (list.length === 0) return;
+  const card = list[state.currentIndex];
+
+  if (favorites.includes(card.id)) {
+    favorites = favorites.filter(id => id !== card.id);
+    showToast("Removed from favorites");
+  } else {
+    favorites.push(card.id);
+    showToast("Added to favorites ⭐");
+  }
+  saveFavorites(favorites);
+  renderCard();
+});
+
+/* -----------------------------------------------------
+   11) ADD / EDIT / DELETE FLASHCARDS
+----------------------------------------------------- */
+
+// Populate the category dropdown in the modal
+function populateCategoryDropdown() {
+  categoryInput.innerHTML = "";
+  Object.keys(DEFAULT_DATA).forEach(catKey => {
+    const opt = document.createElement("option");
+    opt.value = catKey;
+    opt.textContent = `${DEFAULT_DATA[catKey].icon} ${DEFAULT_DATA[catKey].name}`;
+    categoryInput.appendChild(opt);
+  });
+}
+
+function openModal(mode, card = null) {
+  populateCategoryDropdown();
+
+  if (mode === "edit" && card) {
+    modalTitle.textContent = "✏️ Edit Flashcard";
+    categoryInput.value = state.currentCategory;
+    categoryInput.disabled = true; // keep card in same category while editing
+    questionInput.value = card.q;
+    answerInput.value = card.a;
+    state.editingCardId = card.id;
+  } else {
+    modalTitle.textContent = "➕ Add Flashcard";
+    categoryInput.disabled = false;
+    categoryInput.value = state.currentCategory || Object.keys(DEFAULT_DATA)[0];
+    questionInput.value = "";
+    answerInput.value = "";
+    state.editingCardId = null;
+  }
+
+  modalOverlay.hidden = false;
+  questionInput.focus();
+}
+
+function closeModal() {
+  modalOverlay.hidden = true;
+  cardForm.reset();
+  state.editingCardId = null;
+}
+
+addCardBtn.addEventListener("click", () => openModal("add"));
+editBtn.addEventListener("click", () => {
+  const list = getCurrentCardList();
+  if (list.length === 0) {
+    showToast("No card to edit. Add one first!");
+    return;
+  }
+  openModal("edit", list[state.currentIndex]);
+});
+cancelModalBtn.addEventListener("click", closeModal);
+modalOverlay.addEventListener("click", (e) => {
+  if (e.target === modalOverlay) closeModal();
+});
+
+cardForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const q = questionInput.value.trim();
+  const a = answerInput.value.trim();
+  if (!q || !a) return;
+
+  if (state.editingCardId) {
+    // Editing existing card
+    const list = allCards[state.currentCategory];
+    const idx = list.findIndex(c => c.id === state.editingCardId);
+    if (idx !== -1) {
+      list[idx].q = q;
+      list[idx].a = a;
+    }
+    showToast("Flashcard updated ✅");
+  } else {
+    // Adding new card
+    const catKey = categoryInput.value;
+    if (!allCards[catKey]) allCards[catKey] = [];
+    const newId = `${catKey}-${Date.now()}`;
+    allCards[catKey].push({ id: newId, q, a });
+
+    // If adding to the category currently being viewed, jump to the new card
+    if (catKey === state.currentCategory) {
+      state.currentIndex = allCards[catKey].length - 1;
+    }
+    showToast("Flashcard added 🎉");
+  }
+
+  saveAllCards(allCards);
+  closeModal();
+
+  if (!quizSection.hidden) {
+    renderCard();
+  } else {
+    renderCategoryGrid();
+  }
+});
+
+deleteBtn.addEventListener("click", () => {
+  const list = getCurrentCardList();
+  if (list.length === 0) {
+    showToast("Nothing to delete.");
+    return;
+  }
+  const card = list[state.currentIndex];
+  const confirmDelete = confirm("Delete this flashcard? This cannot be undone.");
+  if (!confirmDelete) return;
+
+  allCards[state.currentCategory] = list.filter(c => c.id !== card.id);
+  saveAllCards(allCards);
+
+  // Clean up favorites/studied references
+  favorites = favorites.filter(id => id !== card.id);
+  saveFavorites(favorites);
+  studied = studied.filter(id => id !== card.id);
+  saveStudied(studied);
+
+  if (state.currentIndex >= allCards[state.currentCategory].length) {
+    state.currentIndex = Math.max(0, allCards[state.currentCategory].length - 1);
+  }
+
+  showToast("Flashcard deleted 🗑️");
+  renderCard();
+});
+
+/* -----------------------------------------------------
+   12) TOAST NOTIFICATIONS
+----------------------------------------------------- */
+let toastTimer = null;
+function showToast(message) {
+  toast.textContent = message;
+  toast.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2200);
+}
+
+/* -----------------------------------------------------
+   13) KEYBOARD SHORTCUTS (nice-to-have, non-breaking)
+----------------------------------------------------- */
+document.addEventListener("keydown", (e) => {
+  if (quizSection.hidden) return;
+  if (modalOverlay.hidden === false) return; // don't trigger while typing in modal
+
+  if (e.key === "ArrowRight") nextBtn.click();
+  if (e.key === "ArrowLeft") prevBtn.click();
+  if (e.key === " ") { e.preventDefault(); handleFlipButtonClick(); }
+});
+
+/* -----------------------------------------------------
+   14) SPLASH / INTRO SCREEN (shows for 5 seconds on load)
+----------------------------------------------------- */
+function initSplashScreen() {
+  const splash = document.getElementById("splashScreen");
+  const tagline = document.getElementById("splashTagline");
+  const progressFill = document.getElementById("splashProgressFill");
+  if (!splash) return;
+
+  const funnyLines = [
+    "Waking up your brain cells... 🧠⚡",
+    "Bribing neurons with coffee... ☕🧠",
+    "Shuffling the flashcard deck... 🃏✨",
+    "Polishing your knowledge crown... 👑",
+    "Loading brainy vibes, please stand by... 💜",
+  ];
+
+  let lineIndex = 0;
+  tagline.textContent = funnyLines[0];
+  const lineTimer = setInterval(() => {
+    lineIndex = (lineIndex + 1) % funnyLines.length;
+    tagline.textContent = funnyLines[lineIndex];
+  }, 1000);
+
+  // Kick off the progress bar animation (CSS transition does the 5s fill)
+  requestAnimationFrame(() => {
+    progressFill.style.width = "100%";
+  });
+
+  function dismissSplash() {
+    clearInterval(lineTimer);
+    splash.classList.add("fade-out");
+    // Fully remove from the accessibility tree / layout after the fade
+    setTimeout(() => { splash.hidden = true; }, 650);
+  }
+
+  // The website only opens once the full 5 seconds have passed —
+  // no early skip, so the intro always plays completely.
+  setTimeout(dismissSplash, 5000);
+}
+
+/* -----------------------------------------------------
+   15) INIT
+----------------------------------------------------- */
+function init() {
+  renderCategoryGrid();
+  initSplashScreen();
+}
+
+init();
+
+</script>
+</body>
+</html>
